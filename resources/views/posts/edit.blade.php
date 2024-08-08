@@ -7,14 +7,14 @@
 
 <body>
     <h1>Edit Post</h1>
-    <form action="/posts/{{ $post['id'] }}" method="POST">
+    <form action="/posts/{{ $post->id }}" method="POST">
         @csrf
         @method('PUT')
         <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="{{ $post['title'] }}" >
+        <input type="text" id="title" name="title" value="{{ $post->title }}" >
         <br>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content" >{{ $post['content'] }}</textarea>
+        <label for="body">body:</label>
+        <textarea id="body" name="body" >{{ $post->body }}</textarea>
         <br>
         <button type="submit">Update Post</button>
     </form>

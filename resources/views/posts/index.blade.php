@@ -12,23 +12,23 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Content</th>
+                <th>Body</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach($posts as $post)
             <tr>
-                <td>{{ $post['id'] }}</td>
-                <td><a href="/posts/{{ $post['id'] }}">{{ $post['title'] }}</a></td>
-                <td>{{ $post['content'] }}</td>
+                <td>{{ $post->id }}</td>
+                <td><a href="/posts/{{ $post->id }}">{{ $post->title }}</a></td>
+                <td>{{ $post->body }}</td>
                 <td>
-                    <a href="/posts/{{ $post['id'] }}/edit">Edit</a> |
-                    <a href="/posts/{{ $post['id'] }}">View</a> |
-                    <form action="/posts/{{ $post['id'] }}" method="POST" style="display:inline;">
+                    <a href="/posts/{{ $post->id }}/edit">Edit</a> |
+                    <a href="/posts/{{ $post->id }}">view</a> |
+                    <form action="/posts/{{ $post->id }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" >Delete</button>
+                        <button type="submit">Delete</button>
                     </form>
                 </td>
             </tr>

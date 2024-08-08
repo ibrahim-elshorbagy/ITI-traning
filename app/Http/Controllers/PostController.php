@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
-    private $posts = [
-        ['id' => 1, 'title' => 'First Post', 'content' => 'This is the first post'],
-        ['id' => 2, 'title' => 'Second Post', 'content' => 'This is the second post'],
-    ];
-
     public function index()
     {
-        $posts = $this->posts;
+        $posts = Post::all();
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -24,52 +20,48 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ]);
+        Post::create($request->all());
 
-        echo "Post stored successfully!";
+        return redirect('/posts');
     }
 
-    public function show($postId)
+    public function show($id)
     {
-        $post = null;
-        foreach ($this->posts as $p) {
-            if ($p['id'] == $postId) {
-                $post = $p;
-                break;
-            }
-        }
+        $post = Post::find($id);
 
-        if ($post === null) {
-            return redirect('/posts')->with('error', 'Post not found');
-        }
-
-        return view('posts.show', ['post' => $post, 'postId' => $postId]);
+        return view('posts.show', ['post' => $post]);
     }
 
-    public function edit($postId)
+    public function edit($id)
     {
-        $post = null;
-        foreach ($this->posts as $p) {
-            if ($p['id'] == $postId) {
-                $post = $p;
-                break;
-            }
-        }
+        $post = Post::find($id);
 
-        if ($post === null) {
-            return redirect('/posts')->with('error', 'Post not found');
-        }
-
-        return view('posts.edit', ['post' => $post, 'postId' => $postId]);
+        return view('posts.edit', ['post' => $post]);
     }
 
-    public function update(){
-        echo "Post updated successfully!";
-    }
-
-    public function delete()
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ]);
 
-        echo "Post deleted successfully!";
+        $post = Post::find($id);
 
+        $post->update($request->all());
+
+        return redirect('/posts');
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+
+        return redirect('/posts');
     }
 }
